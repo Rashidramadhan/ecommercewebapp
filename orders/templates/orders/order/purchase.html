@@ -1,0 +1,93 @@
+
+% extends 'base.html'%}
+
+
+  {% block title %}
+  Products
+   {% endblock title %}
+
+ {% block heading %}
+    PURCHASE PRODUCT
+  {% endblock heading %}
+{% block content %}
+ <div class="col-xl-8 col-lg-7">
+              <div class="card shadow mb-4">
+                <!-- Card Header - Dropdown -->
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                  <h6 class="m-0 font-weight-bold text-primary">Purchase orders</h6>
+
+
+                </div>
+            <form action="{% url 'orders:' %}" method="post">  {% csrf_token %}
+                 <div class="col-xl-8 col-lg-7">
+
+                        {{ form_errors }}
+
+                     {% if form_errors %}
+                   pass
+                     {% endif %}
+
+                         <br>
+                       <div class="row text-right">
+                           <div class="col col-md-4">
+                                <label for="id_username">Username: </label>
+                           </div>
+
+                            <div class="col col-md-8">
+                                 <input type="text" class="form-control" name="username" id="id_username" aria-describedby="emailHelp" placeholder="Enter username" required>
+
+                           </div>
+                       </div>
+                         <br>
+
+                      <div class="row text-right">
+                           <div class="col col-md-4">
+                                <label for="order_id">order Id: </label>
+                           </div>
+
+                            <div class="col col-md-8">
+                                 <input type="text" class="form-control" name="order_id" id="order_id" aria-describedby="emailHelp" placeholder="Enter order id" required>
+
+                           </div>
+                       </div><br>
+
+                      <div class="row text-right">
+                           <div class="col col-md-4">
+                                <label for="id_payment_option">Payment Option: </label>
+                           </div>
+
+                            <div class="col col-md-8">
+                                 <input type="text" class="form-control" name="payment_option" id="id_payment_option" aria-describedby="emailHelp" placeholder="Enter payment option" required>
+
+                           </div>
+                       </div><br>
+                      <div class="row text-right">
+                           <div class="col col-md-4">
+                                <label for="id_amount ">Total Amount: </label>
+                           </div>
+
+                            <div class="col col-md-8">
+                                 <input type="text" class="form-control" name="amount " id="id_amount " aria-describedby="emailHelp" placeholder="Enter Amount" required>
+
+                           </div>
+                       </div><br>
+                 </div>
+                  <hr>
+                <div class=" text-center">   <button type="submit" class="btn btn-primary">Purchase</button> </div>
+                      <br>
+
+                   </form>
+
+              </div>
+            </div>
+{% endblock %}
+  <h3>Confirmation</h3>
+                                    <section>
+                                        <div class="product-confarmation">
+                                            <h2>Congratulations! Your Order is accepted.</h2>
+                                            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled
+                                                it to make a type specimen book.</p>
+                                            <button class="btn btn-primary m-y">Track Order</button>
+                                        </div>
+                                    </section>
+.

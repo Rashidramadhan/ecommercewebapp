@@ -1,0 +1,384 @@
+
+{% extends 'base.html'%}
+
+
+  {% block title %}
+  Products
+   {% endblock title %}
+
+ {% block heading %}
+    ONLINE STORE
+  {% endblock heading %}
+
+  {% block content %}
+<div class="row">
+<div class="col-xl-8 col-lg-7">
+      <div class="row">
+
+            <!-- Area Chart -->
+            <div class="col-xl-8 col-lg-7">
+              <div class="card shadow mb-4">
+                <!-- Card Header - Dropdown -->
+                              {% if data_saved %}
+                     <div class="alert alert-success" role="alert">
+                            Your details have been saved!
+                     </div>
+
+                  {% endif %}
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                  <h6 class="m-0 font-weight-bold text-primary">Delivery details</h6>
+                <a class="text-right" href="{% url 'orders:delivery' %}" data-toggle="modal" data-target="#updateModal">
+                  Update address
+                </a>
+
+                </div>
+            <form action="{% url 'orders:delivery' %}" method="post">  {% csrf_token %}
+                 <div class="col-xl-8 col-lg-7">
+
+
+
+
+                    {{ form_errors }}
+
+                     {% if form_errors %}
+                   pass
+                     {% endif %}
+
+                         <br>
+                     <h3>{{ delivery_details.first_name }} {{ delivery_details.last_name }}</h3>
+
+                     {{ delivery_details.phone_number }}, {{ delivery_details.address }}, {{ delivery_details.postal_code }}, {{ delivery_details.city }}
+
+                      <br>
+                 </div>
+                   </form>
+
+              </div>
+            </div>
+
+
+    </div>
+
+      <div class="row">
+
+            <!-- Area Chart -->
+          <div class="col-xl-8 col-lg-7">
+              <div class="card shadow mb-4">
+                <!-- Card Header - Dropdown -->
+                              {% if data_saved %}
+                     <div class="alert alert-success" role="alert">
+                            Your details have been saved!
+                     </div>
+
+                  {% endif %}
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                  <h6 class="m-0 font-weight-bold text-primary">Order details</h6>
+
+
+                </div>
+
+                 <div class="col-xl-8 col-lg-7">
+
+
+                    {{ form_errors }}
+
+                     {% if form_errors %}
+                   pass
+                     {% endif %}
+
+                         <br>
+
+            <form action="{% url 'orders:purchase' %}" method="POST">  {% csrf_token %}
+
+
+<!--                             {{ cart.get_total_price }}-->
+
+
+
+
+<!--                                   {% for item in cart %}-->
+<!--                             {{ item.quantity }} x {{ item.product.name }} Kshs. {{ item.total_price }}-->
+
+<!--                                 {% endfor %}-->
+
+                 {% for item in cart %}
+                              <table>
+                                  <tr>
+                                      <td>
+                                          <input type="hidden" class="form-control" name="item" id="item" aria-describedby="emailHelp" placeholder="Enter first name" required value=" " readonly>
+                                          {{ item.quantity }}x    {{ item.product.name }} <div class="text-warning">Price (KES):  {{ item.total_price }}</div>
+
+                                      </td>
+                                  </tr>
+                                  </table>
+                                  <br><br>
+                                 {% endfor %}
+                 <div class="dropdown-divider"></div>
+                <h6>Total Amount:Ksh</h6>
+                {{ cart.get_total_price }}
+
+
+
+                   </form><br>
+                     <a href="{% url 'orders:payment' %}" class="btn btn-primary btn-lg btn-block" role="button" aria-pressed="true">Proceed to Payment</a>
+
+              </div>
+            </div>
+
+            <!-- Pie Chart -->
+
+
+    </div>
+
+</div>
+</div>
+<div class="col ol-xl-4 col-lg-4">
+
+ <form action="{% url 'orders:purchase' %}" method="POST">
+                  {% csrf_token %}
+
+
+
+<!--     -------------------------------------------------------- -->
+
+
+                            <div class="card shadow mb-4">
+                <!-- Card Header - Dropdown -->
+
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                  <h5 class="alert-heading text-primary">Delivery Charges and Offers</h5>
+                 <div class="col col-sm-2"><input type="text" class="text-right"  name = "total_amount" value="{{ cart.get_total_price }}" hidden></div>
+                </div>
+                    <div>
+                        <h5 class="alert-heading text-success">Delivery fee within Nairobi Region is <h6 class="m-0 font-weight-bold text-warning"> (KES): 300</h6> </h5><hr>
+                        <h5 class="alert-heading text-success">Delivery outside Nairobi Region to be charged based on the distance in KMs</h5><hr>
+                            <h5 class="alert-heading text-success"> if you buy goods worth more than <h6 class="m-0 font-weight-bold text-warning"> (KES): 5000,</h6></h5>
+                            <h5 class="alert-heading text-success">you get a free delivery within Nairobi </h5><hr>
+                        <a class="btn btn-primary align-center" href="{% url 'shop:product_list' %}" role="button">add more products</a>
+                    </div>
+
+              </div>
+
+
+<!--     -------------------------------------------------------- -->
+
+
+
+
+              </form>
+
+      </div>
+    </div>
+
+
+
+
+ <!-- Delivery details Modal-->
+  <div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+            <div class="row">
+                    <div class="col col-sm-6 text-left">
+                          <h6 class="modal-title" id="exampleModalLabel">create shipping details </h6>
+
+
+            </div>
+                    <div class="col col-sm-6 text-right">
+
+                 <a href="{% url 'orders:delivery' %}">add address</a>
+            </div>
+
+            </div>
+
+
+          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <form action="{% url 'cart:cart_checkout' %}" method="POST">  {% csrf_token %}
+                <div class="modal-body">
+
+
+                         <div class="col-xl-8 col-lg-7">
+
+
+
+
+                            {{ form_errors }}
+
+                             {% if form_errors %}
+                           pass
+                             {% endif %}
+
+                                 <br>
+                             <div class="row text-right">
+                                   <div class="col col-md-4">
+                                        <label for="id_first_name">First Name: </label>
+                                   </div>
+
+                                    <div class="col col-md-8">
+                                         <input type="text" class="form-control" name="first_name" id="id_first_name" aria-describedby="emailHelp" placeholder="Enter first name" required value="{{ delivery_details.first_name }}">
+
+                                   </div>
+                               </div>
+                                 <br>
+
+                              <div class="row text-right">
+                                   <div class="col col-md-4">
+                                        <label for="id_last_name">Last Name: </label>
+                                   </div>
+
+                                    <div class="col col-md-8">
+                                         <input type="text" class="form-control" name="last_name" id="id_last_name" aria-describedby="emailHelp" placeholder="Enter last name"  value="{{ delivery_details.last_name }}" required>
+
+                                   </div>
+                               </div><br>
+
+                              <div class="row text-right">
+                                   <div class="col col-md-4">
+                                        <label for="id_phone_number">Phone Number: </label>
+                                   </div>
+
+                                    <div class="col col-md-8">
+                                         <input type="text" class="form-control" name="phone_number" id="id_phone_number" aria-describedby="emailHelp" placeholder="Enter phone number" value="{{ delivery_details.phone_number }}" required>
+
+                                   </div>
+                               </div><br>
+                              <div class="row text-right">
+                                   <div class="col col-md-4">
+                                        <label for="id_address">Home Address: </label>
+                                   </div>
+
+                                    <div class="col col-md-8">
+                                         <input type="text" class="form-control" name="address" id="id_address" aria-describedby="emailHelp" placeholder="Enter home address" value="{{ delivery_details.address }}" required>
+
+                                   </div>
+                               </div><br>
+                              <div class="row text-right"><br>
+                                   <div class="col col-md-4">
+                                        <label for="id_postal_code">Postal Code: </label>
+                                   </div>
+
+                                    <div class="col col-md-8">
+                                         <input type="text" class="form-control" name="postal_code" id="id_postal_code" aria-describedby="emailHelp" placeholder="Enter postal code" value="{{ delivery_details.postal_code }}" required>
+
+                                   </div>
+                               </div><br>
+                              <div class="row text-right"><br>
+                                   <div class="col col-md-4">
+                                        <label for="id_city">City: </label>
+                                   </div>
+
+                                    <div class="col col-md-8">
+                                         <input type="text" class="form-control" name="city" id="id_city" aria-describedby="emailHelp" placeholder="Enter city" value="{{ delivery_details.city }}" required>
+
+                                   </div>
+                               </div>
+
+
+                          </div>
+        <!--                  <hr>-->
+        <!--                <div class=" text-center">   <button type="submit" class="btn btn-primary">Save Details</button> </div>-->
+        <!--                <div class=" text-right">   <a class="btn btn-primary" href="{% url 'orders:purchase' %}" role="button">go to orders</a> </div>-->
+        <!--                      <br>-->
+
+
+                </div>
+                <div class="modal-footer">
+                  <button class="btn btn-seSavecondary" type="button" data-dismiss="modal">Cancel</button>
+        <!--          <a class="btn btn-primary" href="{% url 'orders:purchase' %}">Save</a>-->
+<!--                    <a href="{% url 'cart:cart_checkout' %}" methd class="btn btn-primary">Save</a>-->
+                     <button class="btn btn-primary" type="submit">Save</button>
+
+                </div>
+          </form>
+      </div>
+    </div>
+  </div>
+
+
+<!--&lt;!&ndash;test modal&ndash;&gt;-->
+<!--<form class="form-group" name="payment_options_form">-->
+<!--  <div class="btn-group btn-group-toggle" data-toggle="buttons">-->
+
+<!--  <label class="btn btn-outline-primary btn-toggle active">-->
+<!--    <input type="radio" name="theRadioGroupName" value="10" checked> Mobile Money-->
+<!--  </label>-->
+<!--  <label class="btn btn-outline-primary btn-toggle">-->
+<!--    <input type="radio" name="theRadioGroupName" value="20"> Electronic Cards-->
+<!--  </label>-->
+<!--      </div>-->
+<!--      <br>-->
+
+<!--   <input type="button" value="Proceed to payment" onclick="getRadioValue('theRadioGroupName')">-->
+
+<!--      </form>-->
+
+<!--<br>-->
+
+
+
+
+<!--<br>-->
+<!--<br>-->
+
+<!--    <div class="modal fade" id="mobile_money_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">-->
+<!--  <div class="modal-dialog" role="document">-->
+<!--    <div class="modal-content">-->
+<!--      <div class="modal-header">-->
+<!--        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>-->
+<!--        <h4 class="modal-title" id="exampleModalLabel">MOBILE MONEY</h4>-->
+<!--      </div>-->
+<!--      <div class="modal-body">-->
+<!--        <form>-->
+<!--          <div class="form-group">-->
+<!--            <label for="recipient-name" class="control-label">Recipient:</label>-->
+<!--            <input type="text" class="form-control" id="recipient-name">-->
+<!--          </div>-->
+<!--          <div class="form-group">-->
+<!--            <label for="message-text" class="control-label">Message:</label>-->
+<!--            <textarea class="form-control" id="message-text"></textarea>-->
+<!--          </div>-->
+<!--        </form>-->
+<!--      </div>-->
+<!--      <div class="modal-footer">-->
+<!--        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>-->
+<!--        <button type="button" class="btn btn-primary">Send message</button>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--</div>-->
+<!--    <div class="modal fade" id="card_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">-->
+<!--            <div class="modal-dialog" role="document">-->
+<!--    <div class="modal-content">-->
+<!--      <div class="modal-header">-->
+<!--        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>-->
+<!--        <h4 class="modal-title" id="exampleModalLabel">CARD PAYMENT</h4>-->
+<!--      </div>-->
+<!--      <div class="modal-body">-->
+<!--        <form>-->
+<!--          <div class="form-group">-->
+<!--            <label for="recipient-name" class="control-label">Recipient:</label>-->
+<!--            <input type="text" class="form-control" id="recipient-name">-->
+<!--          </div>-->
+<!--          <div class="form-group">-->
+<!--            <label for="message-text" class="control-label">Message:</label>-->
+<!--            <textarea class="form-control" id="message-text"></textarea>-->
+<!--          </div>-->
+<!--        </form>-->
+<!--      </div>-->
+<!--      <div class="modal-footer">-->
+<!--        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>-->
+<!--        <button type="button" class="btn btn-primary">Send message</button>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--    </div>-->
+
+
+
+
+
+
+  {% endblock content %}

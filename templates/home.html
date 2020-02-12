@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+Product Lists
+
+{% endblock title %}
+
+
+{% block breadcom %}
+
+Product List
+
+{% endblock breadcom %}
+
+
+
+{% block content %}
+
+ <div class="widgets-programs-area mg-t-15">
+            <div class="container-fluid">
+                <div class="row">
+                    {% for product in products %}
+
+                    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+                        <div class="hpanel responsive-mg-b-30">
+                            <div class="panel-body">
+                                <div class="stats-title pull-left">
+                                    <h4>{{ product.name }}</h4>
+                                </div>
+                                <div class="stats-icon pull-center">
+                                      <a href="index.html"><img class="main-logo" src="{% static 'img/all-products/kiwi.jpeg' %}" alt="" /></a>
+
+                                </div>
+                                <div class="m-t-xl">
+                                    <h1 class="text-info">462</h1>
+                                    <small>
+												Lorem Ipsum is simply dummy text of the printing and Lorem <strong>typesetting industry</strong> spa.
+											</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {% endfor %}
+                </div>
+            </div>
+
+
+{% endblock content %}

@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+
+
+{% endblock title %}
+
+
+{% block breadcom %}
+
+Product Details
+
+{% endblock breadcom %}
+
+{% block content %}
+
+    <div class="single-product-tab-area mg-t-15 mg-b-30">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-5 col-md-5 col-sm-5 col-xs-12">
+                        <div id="myTabContent1" class="tab-content">
+                            <div class="product-tab-list tab-pane fade active in" id="single-tab1">
+                                <img src="{% if product.image %} {{ product.image.url }} {% else %}  {% static 'img/default.jpg' %} {% endif %}" alt="..." style="height: 200px; width: auto">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-7 col-md-7 col-sm-7 col-xs-12">
+                        <div class="single-product-details res-pro-tb">
+                            <h1>{{ product.name }}</h1>
+<!--                            <span class="single-pro-star"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i></span>-->
+                            <div class="single-pro-price">
+                                {% if product.discount_price %}
+                                <span class="single-old"><del>Ksh.{{ product.price }}</del></span>
+                                <span style="font-size:16px">Ksh. {{ product.discount_price }}</span>
+                                {% else %}
+                                <span style="font-size:16px">Ksh. {{ product.price }}</span>
+                                {% endif %}
+                            </div>
+<!--                            <div class="color-quality">-->
+                    <form action="{% url 'cart:cart_add' product.id %}" method="post">
+                                {% csrf_token %}
+
+
+                            <h4>Quantity</h4>
+                        <div class="col col-sm-2">
+                            <select class="form-control" name="quantity" id="id_quantity">
+
+                            {% for x in available_stock %}
+                            <option value = "{{ x }}"> {{ x }} </option>
+
+                            {% endfor %}
+                        </select>
+                        </div>
+
+
+                     <div class="button-style-two btn-mg-b-10">
+                                      <button type="submit" class="btn btn-custon-rounded-two btn-danger">ADD TO CART</button>
+                         </div>
+                        </form>
+                                </div>
+                                    <div class="pro-viwer">
+                                        <a href="#"><i class="fa fa-heart"></i></a>
+                                        <a href="#"><i class="fa fa-eye"></i></a>
+                                    </div>
+
+                                <div class="clear"></div>
+                                <div class="single-social-area">
+                                    <h3>share this on</h3>
+                                    <a href="www.facebook.com"><i class="fa fa-facebook"></i></a>
+                                    <a href="#"><i class="fa fa-google-plus"></i></a>
+                                    <a href="#"><i class="fa fa-feed"></i></a>
+                                    <a href="#"><i class="fa fa-twitter"></i></a>
+                                    <a href="#"><i class="fa fa-linkedin"></i></a>
+                                </div>
+
+                            <div class="single-pro-cn">
+                                <p>
+                                <a class="btn btn-danger" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+                                     PRODUCT OVERVIEW
+                                    </a>
+                            </p>
+                                <div class="collapse" id="collapseExample">
+                                  <div class="card card-body">
+                                {{ products.description }}
+                                  </div>
+                                </div>
+                                <div class="col-md-6" style="padding-left: 20px">
+                                 <span class="text-warning">&#9733; &#9733; &#9733; &#9733; &#9734;</span>
+                                     4.0 stars
+                                </div>
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+{% endblock content %}

@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+
+Order success
+{% endblock title %}
+
+
+{% block breadcom %}
+
+Order success
+
+{% endblock breadcom %}
+
+{% block content %}
+
+<div class="product-confarmation">
+    <h3>Congratulations! Your Order is accepted. Your order number is <br><strong class="text-warning">{{ order_id }}</strong></h3>
+</div>
+{% endblock content %}

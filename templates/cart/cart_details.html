@@ -1,0 +1,390 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+
+cart details
+{% endblock title %}
+
+
+{% block breadcom %}
+
+Cart Details
+
+{% endblock breadcom %}
+
+{% block content %}
+<div class="product-cart-area mg-tb-15 ">
+            <div class="container-fluid">
+                <div class="row ">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <div class="product-cart-inner">
+                            <div id="example-basic">
+                                <h3>Shopping Cart</h3>
+                                <section>
+                                    <h3 class="product-cart-dn">Shopping</h3>
+                                    <div class="product-list-cart overflow-auto">
+                                        <div class="product-status-wrap border-pdt-ct overflow-auto ">
+
+                                            <table class="show-on-scroll">
+                                                <tr>
+                                                    <th>Image</th>
+                                                    <th>Product Title</th>
+                                                    <th>Quantity</th>
+                                                    <th>Unit Price</th>
+                                                    <th>Total Price</th>
+                                                    <th>Action</th>
+                                                </tr>
+                                                {% for item in cart %}
+                                                    {% with product=item.product  %}
+                                                <tr>
+                                                            <td>
+                                                                <a href="{{ product.get__absolute_url }}">
+                                                                    <img src="{% if product.image %} {{ product.image.url }} {% else %} {% static 'img/default.jpg' %} {% endif %}" alt="..." style="height: 130px; width: auto">
+                                                                </a>
+                                                            </td>
+                                                            <td>{{ product.name }}<div class="text-warning">In Stock</div></td>
+                                                            <td>
+                                                                <form action="{% url 'cart:cart_add' product.id %}" method="post">
+                                                                    {% csrf_token %}
+                                                                    {{ item.update_quantity_form.quantity }}
+                                                                    {{ item.update_quantity_form.update }}
+                                                                    <button type="submit" value="Update"  class="btn btn-custon-four btn-danger btn-sm">Update</button>
+
+                                                                </form>
+                                                            </td>
+                                                            <td>kshs. {{ item.price }}</td>
+                                                            <td>kshs. {{ item.total_price }}</td>
+                                                            <td>
+                                                                <a href="{% url 'cart:cart_remove' product.id %}"><button data-toggle="tooltip" title="Remove" class="pd-setting-ed"><i class="fa fa-trash-o" aria-hidden="true"></i></button></a>
+                                                            </td>
+
+                                                        </tr>
+                                                        {% endwith %}
+                                                    {% endfor %}
+<!--                                                        <button data-toggle="tooltip" title="Edit" class="pd-setting-ed"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>-->
+<!--                                                        <button data-toggle="tooltip" title="Remove" class="pd-setting-ed"><i class="fa fa-trash-o" aria-hidden="true"></i></button>-->
+                                                         <tr style="background-color: #e50000; color: white; font-size: 16px">
+                                                            <td><b>Total</b></td>
+                                                            <td colspan="4"></td>
+                                                            <td colspan="num"><b>kshs. {{ cart.get_total_price }}</b></td>
+                                                         </tr>
+
+                                            </table>
+                                        </div>
+                                    </div>
+                                </section>
+                                {% if user.is_authenticated %}
+                                    <h3>Delivery Details</h3>
+                                   <section>
+                                        <div class="row" style=" height: 1%">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <div class="tab-content-details shadow-reset">
+                                <div class="row">
+                                    <div class="col col-sm-8">
+                                        <h2>Your Delivery Details</h2>
+
+                                        <form action="{% url 'orders:delivery' %}" method="post">  {% csrf_token %}
+                     <div class="col-xl-8 col-lg-7">
+
+
+
+
+                        {{ form_errors }}
+
+                         {% if form_errors %}
+                       pass
+                         {% endif %}
+
+                             <br>
+                         <h4>{{ delivery_details.first_name }} {{ delivery_details.last_name }}</h4>
+
+                         <h5>{{ delivery_details.phone_number }}, {{ delivery_details.address }}</h5>
+
+                          <br>
+                     </div>
+                       </form>
+
+                                    </div>
+                                    <div class="col col-sm-4">
+                                         <div class="modal-area-button">
+                                    <a class="Primary mg-b-10" href="#" data-toggle="modal" data-target="#PrimaryModalalert">New Address</a>
+                                </div>
+
+
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                                        </div>
+
+                                        <div class="row">
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                            <div class="modal-bootstrap mg-tb-30">
+                                <h2>Order Summary</h2>
+                                                <form action="{% url 'orders:purchase' %}" method="POST">  {% csrf_token %}
+
+
+                                    {% for item in cart %}
+                                      <table>
+                                          <tr>
+                                              <td>
+                                                  <input type="hidden" class="form-control" name="item" id="item" aria-describedby="emailHelp" placeholder="Enter first name" required value=" " readonly>
+                                                  {{ item.quantity }}x    {{ item.product.name }} <div class="text-warning">Price (KES):  {{ item.total_price }}</div>
+
+                                              </td>
+                                          </tr>
+                                          </table>
+                                      <br>
+                                     {% endfor %}
+                     <div class="dropdown-divider"></div>
+                                                    <h4 >Total Amount:<div class="text-warning">Ksh {{ cart.get_total_price }}</div></h4>
+
+
+
+
+                       </form><br>
+
+
+                            </div>
+                            <div id="PrimaryModalalert" class="modal modal-adminpro-general default-popup-PrimaryModal fade" role="dialog">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-close-area modal-close-df">
+                                            <a class="close" data-dismiss="modal" href="#"><i class="fa fa-close"></i></a>
+                                        </div>
+                                        <form action="{% url 'cart:cart_checkout' %}" method="POST">  {% csrf_token %}
+                                        <div class="modal-body">
+    <!--                                        <i class="fa fa-check modal-check-pro"></i>-->
+
+                                        <h3 class="product-cart-dn">Shopping</h3>
+                                        <div class="product-delivary text-left ">
+                                            <h3> Fill in your delivery details</h3>
+                                            <div class="form-group ">
+                                                <label for="card-number" class="form-label">First name *</label>
+                                                <input id="name-2" name="first_name" type="text" class="form-control">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="card-number" class="form-label">Last name *</label>
+                                                <input id="surname-2" name="last_name" type="text" class="form-control">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="address" class="form-label">Address *</label>
+                                                <textarea id="address" name="address" type="text" class="form-control" placeholder="Enter your full address details"></textarea>
+                                            </div>
+
+
+
+                                            <div class="form-group">
+                                                <label for="phone-2" class="form-label">Phone #</label>
+
+                                                    <input id = "phone-2" name="phone_number" type="text" class="form-control" data-mask="(999) 999-999-999" placeholder="">
+                                                    <span class="help-block">(+254) 7XX-XXXXXX</span>
+                                            </div>
+                                        </div>
+
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button class="btn btn-seSavecondary" type="button" data-dismiss="modal">Cancel</button>
+                                            <button class="btn btn-primary" type="submit">Save</button>
+                                        </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                           </div>
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                            <div class="modal-bootstrap mg-tb-30">
+                                <h2>Current Promotions</h2>
+                                <div>
+                                <h5 class="alert-heading text-success">Delivery fee within Nairobi Region is <h6 class="m-0 font-weight-bold text-warning"> (KES): 300</h6> </h5><hr>
+                                <h5 class="alert-heading text-success">Delivery outside Nairobi Region to be charged based on the distance in KMs</h5><hr>
+                                <h5 class="alert-heading text-success"> if you buy goods worth more than <h6 class="m-0 font-weight-bold text-warning"> (KES): 5000,</h6></h5>
+                                <h5 class="alert-heading text-success">you get a free delivery within Nairobi </h5><hr>
+                            <a class="btn btn-primary align-center" href="{% url 'shop:product_list' %}" role="button">add more products</a>
+                        </div>
+                            </div>
+
+                            </div>
+                        </div>
+
+
+                                   </section>
+                                    <h3>Payment Details</h3>
+                                    <section>
+
+                                        <!-- tabs start-->
+            <div class="admintab-area mg-tb-15">
+                <div class="container-fluid">
+                    <div class="alert alert-success">
+                        <h2 class="text-center"> TOTAL PAYMENT (KES): {{ cart.get_total_price }}  </h2>
+                    </div>
+
+                    <div class="row">
+                            <div class="admintab-wrap mg-t-30">
+                                <ul class="nav nav-tabs custom-menu-wrap custon-tab-menu-style1">
+                                    <li class="active"><a data-toggle="tab" href="#TabProject"><span class="adminpro-icon adminpro-analytics tab-custon-ic"></span>Mobile Money</a>
+                                    </li>
+                                    <li><a data-toggle="tab" href="#TabDetails"><span class="adminpro-icon adminpro-analytics-arrow tab-custon-ic"></span>Card Payment</a>
+                                    </li>
+                                </ul>
+                                <div class="tab-content">
+                                    <div id="TabProject" class="tab-pane in active animated flipInX custon-tab-style1">
+                                            <div class="payment-details">
+                                        <form action="{% url 'orders:dummy_order_create' %}" method="POST">  {% csrf_token %}
+
+                                                {{ form_errors }}
+
+                                                         {% if form_errors %}
+                                                       pass
+                                                         {% endif %}
+   <br>
+                                                            <div class="row">
+                                                                 <div class="col col-sm-4 text-right">  <label for="sel1">Select your operator:</label></div>
+                                                                 <div class="col col-sm-6">
+                                                                     <select class="form-control" id="sel1">
+                                                                        <option>Safaricom</option>
+                                                                        <option>Airtel</option>
+                                                                        <option>Telecom</option>
+                                                                      </select>
+                                                                 </div>
+                                                             </div>
+                            <br>
+
+                                                             <div class="row">
+                                                                    <div class="col col-sm-4 text-right"><label for="sel1">Enter your Mobile number:</label></div>
+                                                                 <div class="col col-sm-6">
+                                                                       <input type="text" class="form-control" name="phone_number" id="id_phone_number" aria-describedby="emailHelp" placeholder="Enter phone number" value="{{ delivery_details.phone_number }}" required>
+                                                                 </div>
+                                                             </div>
+                                               <br>
+
+                                            <div class="modal-footer text-center">
+                                              <button class="btn btn-seSavecondary" type="button" data-dismiss="modal">Cancel</button>
+                                    <!--          <a class="btn btn-primary" href="{% url 'orders:purchase' %}">Save</a>-->
+                            <!--                    <a href="{% url 'cart:cart_checkout' %}" methd class="btn btn-primary">Save</a>-->
+                                                 <button class="btn btn-primary" type="submit">Confirm payment</button>
+
+                    </div>
+              </form>
+
+                                    </div>
+                                    </div>
+                                    <div id="TabDetails" class="tab-pane animated flipInX custon-tab-style1">
+
+
+                                              <div class="payment-details">
+                                            <select id="hello-single" class="form-control">
+                                                    <option value="">---- Select card ----</option>
+                                                    <option value="married">Visa</option>
+                                                    <option value="unmarried">Master</option>
+                                                    <option value="married">American Express</option>
+                                                    <option value="unmarried">Discover</option>
+                                                </select>
+                                            <div class="form-group mg-t-15">
+                                                <label for="card-number" class="form-label">Card number</label>
+                                                <input id="card-number" class="form-control" type="text" name="card_number">
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                                    <label for="expdate-month" class="form-label">Expiration date</label>
+                                                    <div class="row gutter-xs">
+                                                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                                            <div class="input-group">
+                                                                <select id="expdate-month" class="form-control" name="expdate_month">
+                                                                        <option value="" selected="selected">Month</option>
+                                                                        <option value="1">01</option>
+                                                                        <option value="2">02</option>
+                                                                        <option value="3">03</option>
+                                                                        <option value="4">04</option>
+                                                                        <option value="5">05</option>
+                                                                        <option value="6">06</option>
+                                                                        <option value="7">07</option>
+                                                                        <option value="8">08</option>
+                                                                        <option value="9">09</option>
+                                                                        <option value="10">10</option>
+                                                                        <option value="11">11</option>
+                                                                        <option value="12">12</option>
+                                                                    </select>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                                            <div class="form-group">
+                                                                <select id="expdate-year" class="form-control" name="expdate_year">
+                                                                        <option value="" selected="selected">Year</option>
+                                                                        <option value="2016">2016</option>
+                                                                        <option value="2017">2017</option>
+                                                                        <option value="2018">2018</option>
+                                                                        <option value="2019">2019</option>
+                                                                        <option value="2020">2020</option>
+                                                                        <option value="2021">2021</option>
+                                                                        <option value="2022">2022</option>
+                                                                        <option value="2023">2023</option>
+                                                                        <option value="2024">2024</option>
+                                                                        <option value="2025">2025</option>
+                                                                        <option value="2026">2026</option>
+                                                                        <option value="2027">2027</option>
+                                                                        <option value="2028">2028</option>
+                                                                        <option value="2029">2029</option>
+                                                                        <option value="2030">2030</option>
+                                                                        <option value="2031">2031</option>
+                                                                        <option value="2032">2032</option>
+                                                                        <option value="2033">2033</option>
+                                                                        <option value="2034">2034</option>
+                                                                        <option value="2035">2035</option>
+                                                                        <option value="2036">2036</option>
+                                                                    </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-5 offset-md-1">
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <div class="form-group">
+                                                                <label for="cvv2-number" class="form-label">Card Security Code</label>
+                                                                <input id="cvv2-number" class="form-control" type="text" name="cvv2_number">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="promotional-code" class="control-label">Promotional code</label>
+                                                <input id="promotional-code" class="form-control" type="text" name="promotional_code">
+                                            </div>
+                                            <button type="submit" class="btn btn-primary btn-block">Submit</button>
+                                        </div>
+
+
+
+                                           </div>
+
+                                </div>
+                            </div>
+
+
+                    </div>
+                </div>
+                </div>
+
+                                <h3 class="product-cart-dn">Shopping</h3>
+
+                                    </section>
+
+                                {% else %}
+                                <h3>Login </h3>
+                                <section>
+                                   <a class="btn btn-primary" href="{% url 'login' %}" role="button">Login to continue</a>
+                                </section>
+                                {% endif %}
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+{% endblock content %}

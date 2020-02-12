@@ -1,0 +1,30 @@
+<section>
+                                    <h3 class="product-cart-dn">Shopping</h3>
+                                    <div class="product-delivary">
+                                        <div class="form-group">
+                                            <label for="card-number" class="form-label">First name *</label>
+                                            <input id="name-2" name="name" type="text" class="form-control">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="card-number" class="form-label">Last name *</label>
+                                            <input id="surname-2" name="surname" type="text" class="form-control">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="address" class="form-label">Address *</label>
+                                            <textarea id="address" name="address" type="text" class="form-control" placeholder="Enter your full address details"></textarea>
+                                        </div>
+
+
+
+                                        <div class="form-group">
+                                            <label for="phone-2" class="form-label">Phone #</label>
+
+                                                <input id = "phone-2" type="text" class="form-control" data-mask="(999) 999-999-999" placeholder="">
+                                                <span class="help-block">(+254) 7XX-XXXXXX</span>
+
+
+
+
+                                        </div>
+                                    </div>
+                                </section>

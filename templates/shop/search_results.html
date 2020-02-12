@@ -1,0 +1,134 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+
+
+{% endblock title %}
+
+
+{% block breadcom %}
+
+Search Results
+
+{% endblock breadcom %}
+
+{% block content %}
+<div class="col">
+    <div class="row">
+{% if results %}
+<div class="widgets-programs-area mg-t-15">
+            <div class="container-fluid">
+                <div class="row">
+          {% for result in results %}
+                    <div class="col-md-4">
+                        <div class="thumbnail">
+
+                            <a href="{{ result.get_absolute_url }}">
+                                <img src="{% if result.image %} {{ result.image.url }}  {% endif %}" alt="..." style="height: 130px; width: auto">
+                            </a>
+                            <div class="caption">
+                                <h4 class="text-center">
+                                    <a href="{{ result.get_absolute_url }}">{{ result.name }}</a>
+<!--                                    {{ product.slug }}-->
+<!--                                    <a href="{{ product.slug }} {{ product.pk }}">{{ product.name }}</a>-->
+                                </h4>
+                                <p class="text-center">
+                                {% if result.discount_price %}
+                                    <span class="single-old"><del>Ksh.{{ result.price }}</del></span>
+                                    <span style="font-size:16px">Ksh. {{ result.discount_price }}</span>
+                                {% else %}
+                                    <span style="font-size:16px">Ksh. {{ result.price }}</span>
+                                    {% endif %}</p>
+                            </div>
+                        </div>
+                    </div>
+          {% endfor %}
+
+                </div>
+                </div>
+                </div>
+  {% else %}
+  No search results for this query
+   {% endif %}
+</div>
+<br>
+    <hr>
+    <div class="row">
+{% if related_by_category %}
+<div class="widgets-programs-area mg-t-15">
+            <div class="container-fluid">
+                <div class="row">
+          {% for result in related_by_category %}
+                    <div class="col-md-4">
+                        <div class="thumbnail">
+
+                            <a href="{{ result.get_absolute_url }}">
+                                <img src="{% if result.image %} {{ result.image.url }}  {% endif %}" alt="..." style="height: 130px; width: auto">
+                            </a>
+                            <div class="caption">
+                                <h4 class="text-center">
+                                    <a href="{{ result.get_absolute_url }}">{{ result.name }}</a>
+<!--                                    {{ product.slug }}-->
+<!--                                    <a href="{{ product.slug }} {{ product.pk }}">{{ product.name }}</a>-->
+                                </h4>
+                                <p class="text-center">
+                                {% if result.discount_price %}
+                                    <span class="single-old"><del>Ksh.{{ result.price }}</del></span>
+                                    <span style="font-size:16px">Ksh. {{ result.discount_price }}</span>
+                                {% else %}
+                                    <span style="font-size:16px">Ksh. {{ result.price }}</span>
+                                    {% endif %}</p>
+                            </div>
+                        </div>
+                    </div>
+          {% endfor %}
+
+                </div>
+                </div>
+                </div>
+  {% endif %}
+    </div>
+    <br>
+    <hr>
+    <div class="row">
+{% if related_by_brand %}
+<div class="widgets-programs-area mg-t-15">
+            <div class="container-fluid">
+                <div class="row">
+          {% for result in related_by_brand %}
+                    <div class="col-md-4">
+                        <div class="thumbnail">
+
+                            <a href="{{ result.get_absolute_url }}">
+                                <img src="{% if result.image %} {{ result.image.url }}  {% endif %}" alt="..." style="height: 130px; width: auto">
+                            </a>
+                            <div class="caption">
+                                <h4 class="text-center">
+                                    <a href="{{ result.get_absolute_url }}">{{ result.name }}</a>
+<!--                                    {{ product.slug }}-->
+<!--                                    <a href="{{ product.slug }} {{ product.pk }}">{{ product.name }}</a>-->
+                                </h4>
+                               <p class="text-center">
+                                {% if result.discount_price %}
+                                    <span class="single-old"><del>Ksh.{{ result.price }}</del></span>
+                                    <span style="font-size:16px">Ksh. {{ result.discount_price }}</span>
+                                {% else %}
+                                    <span style="font-size:16px">Ksh. {{ result.price }}</span>
+                                    {% endif %}</p>
+                            </div>
+                        </div>
+                    </div>
+          {% endfor %}
+
+                </div>
+                </div>
+                </div>
+  {% endif %}
+    </div>
+
+</div>
+
+
+
+
+{% endblock content %}

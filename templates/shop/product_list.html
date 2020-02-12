@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+Product Lists
+
+{% endblock title %}
+
+
+{% block breadcom %}
+
+Product List
+
+{% endblock breadcom %}
+
+
+
+{% block content %}
+
+ <div class="widgets-programs-area mg-t-15">
+            <div class="container-fluid">
+                <div class="row">
+                   {% for product in products %}
+                        <div class="col">
+
+                              <div class="widget-program-box mg-tb-30">
+                                  <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+                            <div class="hpanel responsive-mg-b-30">
+                                <div class="panel-body">
+                                    <div class="text-center content-box">
+                                        <a href="{{ product.get_absolute_url }}">
+                                            <h4 class="text-info text-center">{{ product.name }}</h4></a>
+
+                                    </div>
+                                    <div class="stats-icon pull-center">
+                                     <a href="{{ product.get_absolute_url }}">
+                                    <img class="card-img-top" src="{% if product.image %} {{ product.image.url }} {% else %} {% endif %}" alt="..." style="height: 150px; width: auto">
+                                </a>
+                                    </div>
+                                    <div class="m-t-xl">
+                                        <div class="single-pro-price">
+                                    {% if product.discount_price %}
+                                    <span class="single-old"><del>Ksh.{{ product.price }}</del></span>
+                                    <span style="font-size:16px">Ksh. {{ product.discount_price }}</span>
+                                {% else %}
+                                    <span style="font-size:16px">Ksh. {{ product.price }}</span>
+                                    {% endif %}
+                                </div>
+
+                                         <hr>
+
+                                         <div class="card-footer">
+                                                <small class="text-info">&#9733; &#9733; &#9733; &#9733; &#9734;</small> 4.0 stars
+                                                      </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                              </div>
+                        </div>
+
+                  {% endfor %}
+
+
+                </div>
+            </div>
+
+ </div>
+{% endblock content %}
